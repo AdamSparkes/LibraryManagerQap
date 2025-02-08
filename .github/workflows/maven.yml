@@ -1,0 +1,25 @@
+name: Maven Build and Test
+
+on:
+  pull_request:
+    branches: [ "main" ]  # or "master" or any other branch(es) you want to monitor
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '21'  # or 17, or the Java version you’re using
+
+      - name: Build with Maven
+        run: mvn -B package --file pom.xml
+
+      - name: Run Tests
+        run: mvn test
