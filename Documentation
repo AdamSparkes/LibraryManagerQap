@@ -1,0 +1,109 @@
+1. Explain how your code meets clean code practices by using at least 3 examples of your own code. Screenshots should be used
+Throughout all of my code, each function name is concise and meaningful mostly giving a brief synopsis of what the function does, it is hard to get a screenshot for this so I will give examples of the function names
+public void addBook(Book book);
+public void deleteUser(String userId);
+public Book searchBook(String title);
+
+Each class has a Single responsibility, there are no suprise book function in "User.java" and vice versa- by doing this throughout the development process it made it easier to iterate or add to each class and keep the code
+clean and seperated.
+
+The formatting of my code throughout the project was kep consistent, maintaining good spacing between functions and keeping naming conventions and aligning the code properly to sustain readability.
+Example from Book.Java
+package com.librarymanager.models;
+
+public class Book {
+    private String id;
+    private String title;
+    private int inStock;
+
+    public Book(String id, String title, int inStock) {
+        this.id = id;
+        this.title = title;
+        this.inStock = inStock;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+vs. Example from User
+package com.librarymanager.models;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class User {
+    private String id;
+    private String name;
+    private List<Book> borrowedBooks = new ArrayList<>();
+
+    public User(String id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
+    public String getId() { return id; }
+    public String getName() { return name; }
+    public List<Book> getBorrowedBooks() { return borrowedBooks; }
+
+    public boolean borrowBook(Book book) {
+        if (borrowedBooks.size() >= 3) {
+            System.out.println(name + " cannot borrow more than 3 books.");
+            return false;
+    }
+        if (book.getInStock() > 0) {
+            borrowedBooks.add(book);
+            book.borrowBook();
+            return true;
+    }
+        return false;
+    }
+
+While both files have different functions, both maintain the same spacing and naming conventions.
+
+
+2. Explain your project. What it does, how it works. Explain the test cases you used
+
+My project allows the user to Manage users- register and delete, Manage books- Add books, track stock and search for availible books,
+and Borrowing/Returning books with a max of 3 borrowed books per user and automatically updates amount in stock when borrowed.
+
+It works using Scanner, all that is needed is to Run the application and interact with the created Menu- each option availible will use different methods withing the "LibraryService" class.
+Library service Stores Maps for Books and users to assist in managing them and Book and User holds the respective information for each i.e Books, Stock, list of books borrowed ect.
+
+BookTest tests 
+-That a new book object can be created with Id Title and stock amount 
+-That books can be borrowed if atleast 1 book is in stock
+-That Borrow Fails when out of stock
+-That a book can be returned and the stock rises.
+
+UserTest tests
+-That a new User object is created with the correct Id and Name and initialized an empty list of borrowed books
+-That once borrowed the book is added to the users list of books.
+-That borrow fails if the User has 3 books currently borrowed.
+-That a user can return a book and update their list.
+
+LibraryServicesTest
+-That a newly added book with addBook() can be found by SearchBook(title).
+-That an out of stock/non-existent book cannot be found.
+-That when a User borrows a book, both the user's list and stock are updated.
+-That a non-existent user Id fails when borrowing a book.
+-That you can delete a user.
+
+3. Outline the needed dependencies. Where did you get them from?
+
+JUnit5- You told us to use that for testing.
+
+Maven Surefire Plugin- Gotten from maven to detect and run my tests
+
+ProjectLombok also from Maven Central
+
+By adding these to my pom.xml file they were all automatically downloaded and ready for use.
+
+4. If you had any problems the QAP please explain what happened.
+
+Most of problems revolved around a "Phantom error" I'm going to refer to it as, as it was telling me it could not resolve a certain symbol in my unit tests, however when I ran the tests
+they worked fine and the issue went away- not really sure what happened however it all seemed to work out.
